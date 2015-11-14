@@ -1,0 +1,6 @@
+* RDMA Distribution Driver for Erlang (HPCW Branch)
+
+See master branch for main README
+
+This branch is all about portig the C code to compile on the HPCWales cluster.
+
