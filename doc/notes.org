@@ -1,0 +1,68 @@
+* Notes
+
+** diary
+
+*** UNRESOLVED
+
+/usr/include/rdma/rdma_cma.h:576:53: error: dereferencing pointer to incomplete type
+/usr/include/rdma/rdma_cma.h:577:52: error: dereferencing pointer to incomplete type
+/usr/include/rdma/rdma_cma.h:583:53: error: dereferencing pointer to incomplete type
+/usr/include/rdma/rdma_cma.h:584:52: error: dereferencing pointer to incomplete type
+
+Seem to need netinet/in.h but including that makes no difference.
+
+*** sys/un.h
+
+adding this header removes some warnings (but no errors)
+
+*** add typedefs for pid, gid, uid
+
+removes:
+
+/usr/include/bits/socket.h:304:3: error: unknown type name ‘pid_t’
+/usr/include/bits/socket.h:305:3: error: unknown type name ‘uid_t’
+/usr/include/bits/socket.h:306:3: error: unknown type name ‘gid_t’
+
+introduces none
+
+*** add typedef
+
+  typedef unsigned short int in_addr_t;
+
+removes:
+
+/usr/include/arpa/inet.h:35:1: error: unknown type name ‘in_addr_t’
+/usr/include/arpa/inet.h:38:1: error: unknown type name ‘in_addr_t’
+/usr/include/arpa/inet.h:42:38: error: unknown type name ‘in_addr_t’
+/usr/include/arpa/inet.h:42:55: error: unknown type name ‘in_addr_t’
+/usr/include/arpa/inet.h:46:1: error: unknown type name ‘in_addr_t’
+/usr/include/arpa/inet.h:50:1: error: unknown type name ‘in_addr_t’
+/usr/include/arpa/inet.h:78:25: error: unknown type name ‘in_addr_t’
+
+introduces none
+
+*** add include for typedef:
+
+  #include <bits/sockaddr.h>
+  /* typedef unsigned short int sa_family_t; */
+
+removes introduced error; no new errors
+
+*** change rebar.config & rdma_drv.c:
+
+  -I/usr/include/bits/ -> -I/usr/include/
+  #include <types.h> -> #include <bits/types.h>
+
+removes about 6 error types, introduces one error type
+
+** compile with rebar
+
+N.B.: using "env CC=gcc ./rebar compile"
+
+$ gcc -v
+Using built-in specs.
+Target: x86_64-redhat-linux
+Configured with: ../configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --enable-shared --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --enable-libgcj-multifile --enable-languages=c,c++,objc,obj-c++,java,fortran,ada --enable-java-awt=gtk --disable-dssi --enable-plugin --with-java-home=/usr/lib/jvm/java-1.4.2-gcj-1.4.2.0/jre --with-cpu=generic --host=x86_64-redhat-linux
+Thread model: posix
+gcc version 4.1.2 20080704 (Red Hat 4.1.2-48)
+
