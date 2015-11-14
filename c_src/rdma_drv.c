@@ -14,6 +14,8 @@
  * under the License.
  */
 
+#include "bandaid.h"
+
 #include <arpa/inet.h>
 #include <ei.h>
 #include <erl_driver.h>
