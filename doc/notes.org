@@ -1,5 +1,7 @@
 * Notes
 
+(n.b.: these notes are *not* formatted for github pretty-printing.)
+
 ** diary
 
 *** UNRESOLVED
